@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#8BC34A">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
+        android:padding="24dp">
 
         <EditText
             android:id="@+id/firstNameInput"
@@ -22,49 +22,49 @@
             android:id="@+id/lastNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Last Name"
-            android:inputType="textPersonName"
-            android:layout_marginTop="8dp" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/usernameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Username"
-            android:inputType="text"
-            android:layout_marginTop="8dp" />
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:layout_marginTop="8dp" />
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/phoneInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Phone Number"
-            android:inputType="phone"
-            android:layout_marginTop="8dp" />
+            android:inputType="phone" />
 
         <EditText
             android:id="@+id/passwordInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginTop="8dp" />
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/registerUserBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="16dp"/>
+            android:text="Register"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 </ScrollView>

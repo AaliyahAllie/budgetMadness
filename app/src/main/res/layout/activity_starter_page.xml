@@ -2,26 +2,26 @@
     android:id="@+id/homeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:background="#8BC34A"
     android:gravity="center"
-    android:background="#FFFFFF">
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <ImageView
         android:id="@+id/homeLogo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/ic_logo"
-        android:contentDescription="App Logo"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:contentDescription="App Logo"
+        android:src="@drawable/ic_logo" />
 
     <Button
         android:id="@+id/btnGetStarted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Started"
         android:backgroundTint="#4CAF50"
+        android:text="Get Started"
         android:textColor="#FFFFFF" />
 
 </LinearLayout>
