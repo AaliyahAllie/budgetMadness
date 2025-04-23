@@ -1,37 +1,27 @@
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
 
-    <!-- Main Content -->
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="24dp"
-        android:background="#E8F5E9">
-
-        <ImageView
-            android:src="@drawable/ic_logo"
+    <ImageView
+        android:id="@+id/homeLogo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_gravity="center" />
+        android:src="@drawable/ic_logo"
+        android:contentDescription="App Logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
 
-        <Button
-            android:id="@+id/getStartedBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Get Started"
-            android:layout_marginTop="24dp" />
-    </LinearLayout>
-
-    <!-- Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navView"
+    <Button
+        android:id="@+id/btnGetStarted"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#FFFFFF"
-        app:menu="@menu/nav_menu" />
-</androidx.drawerlayout.widget.DrawerLayout>
+        android:layout_height="wrap_content"
+        android:text="Get Started"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

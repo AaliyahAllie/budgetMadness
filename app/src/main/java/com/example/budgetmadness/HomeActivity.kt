@@ -19,8 +19,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navView = findViewById(R.id.navView)
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
@@ -33,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-        findViewById<Button>(R.id.getStartedBtn).setOnClickListener {
+        findViewById<Button>(R.id.btnGetStarted).setOnClickListener {
             Toast.makeText(this, "Getting started!", Toast.LENGTH_SHORT).show()
         }
     }
