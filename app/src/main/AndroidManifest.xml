@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetMadness"
         tools:targetApi="31">
-        <activity
-            android:name=".nav_menu"
-            android:exported="false" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false" />

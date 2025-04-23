@@ -10,16 +10,22 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val username = findViewById<EditText>(R.id.loginUsername)
-        val password = findViewById<EditText>(R.id.loginPassword)
+        val usernameField = findViewById<EditText>(R.id.loginUsername)
+        val passwordField = findViewById<EditText>(R.id.loginPassword)
         val loginBtn = findViewById<Button>(R.id.loginBtnFinal)
 
         loginBtn.setOnClickListener {
-            val prefs = getSharedPreferences("users", MODE_PRIVATE)
-            val storedPassword = prefs.getString("${username.text}_password", "")
+            val username = usernameField.text.toString().trim()
+            val password = passwordField.text.toString()
 
-            if (storedPassword == password.text.toString()) {
+            val prefs = getSharedPreferences("users", MODE_PRIVATE)
+            val storedPassword = prefs.getString("${username}_password", "")
+
+            if (storedPassword == password) {
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+
+                // ✅ Redirect to HomeActivity
+
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             } else {
