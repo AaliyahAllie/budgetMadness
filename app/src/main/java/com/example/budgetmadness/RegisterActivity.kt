@@ -1,67 +1,40 @@
 package com.example.budgetmadness
 
-
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
-
-    private lateinit var firstNameInput: EditText
-    private lateinit var lastNameInput: EditText
-    private lateinit var usernameInput: EditText
-    private lateinit var emailInput: EditText
-    private lateinit var phoneInput: EditText
-    private lateinit var passwordInput: EditText
-    private lateinit var registerUserBtn: Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Initialize views
-        firstNameInput = findViewById(R.id.firstNameInput)
-        lastNameInput = findViewById(R.id.lastNameInput)
-        usernameInput = findViewById(R.id.usernameInput)
-        emailInput = findViewById(R.id.emailInput)
-        phoneInput = findViewById(R.id.phoneInput)
-        passwordInput = findViewById(R.id.passwordInput)
-        registerUserBtn = findViewById(R.id.registerUserBtn)
+        val username = findViewById<EditText>(R.id.usernameInput)
+        val password = findViewById<EditText>(R.id.passwordInput)
+        val firstName = findViewById<EditText>(R.id.firstNameInput)
+        val lastName = findViewById<EditText>(R.id.lastNameInput)
+        val email = findViewById<EditText>(R.id.emailInput)
+        val phone = findViewById<EditText>(R.id.phoneInput)
+        val registerBtn = findViewById<Button>(R.id.registerUserBtn)
 
-        // Register button click listener
-        registerUserBtn.setOnClickListener {
-            // Get input values
-            val firstName = firstNameInput.text.toString().trim()
-            val lastName = lastNameInput.text.toString().trim()
-            val username = usernameInput.text.toString().trim()
-            val email = emailInput.text.toString().trim()
-            val phone = phoneInput.text.toString().trim()
-            val password = passwordInput.text.toString()
+        registerBtn.setOnClickListener {
+            val user = username.text.toString().trim()
+            val pass = password.text.toString().trim()
 
-            // Validate inputs
-            if (firstName.isEmpty() || lastName.isEmpty() || username.isEmpty()
-                || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (user.isNotEmpty() && pass.isNotEmpty()) {
+                // Save credentials (simplified for demo purposes)
+                val prefs = getSharedPreferences("users", MODE_PRIVATE)
+                prefs.edit().putString("${user}_password", pass).apply()
+
+                Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show()
+
+                // ✅ Redirect to login screen
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
             }
-
-            // Save user data using SharedPreferences
-            val prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putString("firstName", firstName)
-            editor.putString("lastName", lastName)
-            editor.putString("username", username)
-            editor.putString("email", email)
-            editor.putString("phone", phone)
-            editor.putString("password", password)
-            editor.apply()
-
-            // Display success message
-            Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
-
-            // Optional: Navigate back to login or home screen
-            finish()
         }
     }
 }
