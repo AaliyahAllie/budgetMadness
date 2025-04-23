@@ -24,11 +24,14 @@ class LoginActivity : AppCompatActivity() {
             if (storedPassword == password) {
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
 
-                // ✅ Redirect to HomeActivity
-
-                startActivity(Intent(this, HomeActivity::class.java))
+                // Start HomeActivity and clear the back stack
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
-            } else {
+
+            }
+            else {
                 Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
             }
         }
