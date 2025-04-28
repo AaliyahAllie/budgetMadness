@@ -12,7 +12,15 @@
     tools:context=".MainActivity">
 
 
-
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/homeLogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="App Logo"
+        android:src="@drawable/ic_logo"
+        app:shapeAppearanceOverlay="@style/CircleImageView" />
 
     <Button
         android:id="@+id/registerBtn"
