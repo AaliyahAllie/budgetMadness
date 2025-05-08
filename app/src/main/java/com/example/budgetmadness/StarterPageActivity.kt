@@ -26,48 +26,26 @@ class StarterPageActivity : AppCompatActivity() {
         navigationView = findViewById(R.id.navigationView)
         toolbar = findViewById(R.id.toolbar)
 
-        // Set the Toolbar as the app bar
         setSupportActionBar(toolbar)
 
-        // Initialize and attach toggle to DrawerLayout
         toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
+            R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Navigation menu item clicks
         navigationView.setNavigationItemSelectedListener { menuItem ->
             Toast.makeText(this, "Clicked: ${menuItem.title}", Toast.LENGTH_SHORT).show()
-            menuItem.isChecked = true
-
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    if (this !is StarterPageActivity)
-                        startActivity(Intent(this, StarterPageActivity::class.java))
-                }
-                R.id.nav_add_expenses -> startActivity(Intent(this, AddExpensesActivity::class.java))
-                R.id.nav_expense_view -> startActivity(Intent(this, ExpenseViewActivity::class.java))
-                R.id.nav_categories -> startActivity(Intent(this, CategoriesActivity::class.java))
-                R.id.nav_budget -> startActivity(Intent(this, BudgetActivity::class.java))
-                R.id.nav_income -> startActivity(Intent(this, IncomeActivity::class.java))
-                R.id.nav_balance -> startActivity(Intent(this, BalanceActivity::class.java))
-                R.id.nav_profile -> startActivity(Intent(this, ProfileActivity::class.java))
-            }
-
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
-        // "Get Started" button click
         findViewById<Button>(R.id.btnGetStarted).setOnClickListener {
-            Toast.makeText(this, "Getting Started!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Get Started Clicked!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Handle back press to close drawer first
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
