@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="homeLayout" type="id" />
+    <item name="nav_add_expenses" type="id" />
 </resources>
