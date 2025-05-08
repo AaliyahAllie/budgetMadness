@@ -41,6 +41,8 @@ android {
 dependencies {
     // Room Database Dependencies
     implementation("androidx.room:room-runtime:2.5.0")
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     kapt("androidx.room:room-compiler:2.5.0") // Ensure correct usage of kapt for room-compiler
 
     // Other dependencies

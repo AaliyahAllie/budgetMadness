@@ -6,9 +6,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        dbHelper = DatabaseHelper(this)
 
         val username = findViewById<EditText>(R.id.usernameInput)
         val password = findViewById<EditText>(R.id.passwordInput)
@@ -21,11 +26,14 @@ class RegisterActivity : AppCompatActivity() {
         registerBtn.setOnClickListener {
             val user = username.text.toString().trim()
             val pass = password.text.toString().trim()
+            val first = firstName.text.toString().trim()
+            val last = lastName.text.toString().trim()
+            val mail = email.text.toString().trim()
+            val phoneNum = phone.text.toString().trim()
 
-            if (user.isNotEmpty() && pass.isNotEmpty()) {
-                // Save credentials (simplified for demo purposes)
-                val prefs = getSharedPreferences("users", MODE_PRIVATE)
-                prefs.edit().putString("${user}_password", pass).apply()
+            if (user.isNotEmpty() && pass.isNotEmpty() && first.isNotEmpty() && last.isNotEmpty() && mail.isNotEmpty() && phoneNum.isNotEmpty()) {
+                // Save user data to database
+                dbHelper.addUser(user, pass, first, last, mail, phoneNum)
 
                 Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show()
 
@@ -33,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             } else {
-                Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
             }
         }
     }
