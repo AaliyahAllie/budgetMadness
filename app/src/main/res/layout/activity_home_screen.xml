@@ -63,6 +63,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textViewExpenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -82,6 +83,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/incomeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -90,6 +92,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
     </LinearLayout>
 
     <!-- Balance label -->
@@ -114,6 +117,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textViewBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="R1,500"

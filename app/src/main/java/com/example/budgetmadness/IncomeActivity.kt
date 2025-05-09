@@ -1,20 +1,48 @@
 package com.example.budgetmadness
 
+
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class IncomeActivity : AppCompatActivity() {
+
+    private lateinit var editCashIncome: EditText
+    private lateinit var editCardIncome: EditText
+    private lateinit var btnSave: Button
+    private lateinit var dbHelper: IncomeDatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_income)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        editCashIncome = findViewById(R.id.edit_cash_income)
+        editCardIncome = findViewById(R.id.edit_card_income)
+        btnSave = findViewById(R.id.btn_save)
+
+        dbHelper = IncomeDatabaseHelper(this)
+
+        btnSave.setOnClickListener {
+            val cashStr = editCashIncome.text.toString()
+            val cardStr = editCardIncome.text.toString()
+
+            if (cashStr.isBlank() || cardStr.isBlank()) {
+                Toast.makeText(this, "Please enter both values", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            try {
+                val cash = cashStr.toDouble()
+                val card = cardStr.toDouble()
+                dbHelper.insertIncome(cash, card)
+                Toast.makeText(this, "Income saved successfully!", Toast.LENGTH_SHORT).show()
+                editCashIncome.text.clear()
+                editCardIncome.text.clear()
+            } catch (e: NumberFormatException) {
+                Toast.makeText(this, "Invalid number format", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
