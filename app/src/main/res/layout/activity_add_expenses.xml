@@ -17,9 +17,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:layout_width="40dp"
@@ -48,9 +48,9 @@
         android:hint="Enter Expense Name"
         android:textColor="#FFFFFF"
         android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Expense Amount -->
     <EditText
@@ -63,9 +63,9 @@
         android:inputType="numberDecimal"
         android:textColor="#FFFFFF"
         android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expenseNameInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expenseNameInput" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Payment Method -->
     <EditText
@@ -77,9 +77,9 @@
         android:hint="Card or Cash"
         android:textColor="#FFFFFF"
         android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expenseAmountInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expenseAmountInput" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Category Spinner -->
     <Spinner
@@ -88,9 +88,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/paymentMethodInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/paymentMethodInput" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Select Date Button -->
     <Button
@@ -102,9 +102,10 @@
         android:text="Select Date"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Select Date Button"
+        app:layout_constraintTop_toBottomOf="@id/categorySpinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categorySpinner" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Upload Receipt Button -->
     <Button
@@ -116,9 +117,10 @@
         android:text="Add Receipt Image"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Upload Receipt Image Button"
+        app:layout_constraintTop_toBottomOf="@id/selectDateButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selectDateButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Add Expense Button -->
     <Button
@@ -130,8 +132,22 @@
         android:text="ADD"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Add Expense Button"
+        app:layout_constraintTop_toBottomOf="@id/uploadReceiptButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/uploadReceiptButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#8BC34A"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@null"
+        app:menu="@menu/bottom_nav_home_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

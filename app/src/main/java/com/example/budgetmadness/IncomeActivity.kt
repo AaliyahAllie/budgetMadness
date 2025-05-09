@@ -1,11 +1,13 @@
 package com.example.budgetmadness
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class IncomeActivity : AppCompatActivity() {
 
@@ -42,6 +44,17 @@ class IncomeActivity : AppCompatActivity() {
                 editCardIncome.text.clear()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "Invalid number format", Toast.LENGTH_SHORT).show()
+            }
+        }
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_open_menu -> {
+                    startActivity(Intent(this, MenuActivity::class.java))
+                    true
+                }
+
+                else -> false
             }
         }
     }

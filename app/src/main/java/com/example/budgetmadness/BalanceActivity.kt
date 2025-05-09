@@ -1,10 +1,12 @@
 package com.example.budgetmadness
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BalanceActivity : AppCompatActivity() {
 
@@ -28,5 +30,16 @@ class BalanceActivity : AppCompatActivity() {
         adapter = IncomeHistoryAdapter(incomeList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_open_menu -> {
+                    startActivity(Intent(this, MenuActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+            }
     }
 }
