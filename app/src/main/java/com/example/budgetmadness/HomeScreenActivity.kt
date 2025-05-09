@@ -11,8 +11,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class HomeScreenActivity : AppCompatActivity() {
 
     private lateinit var incomeTextView: TextView
-    private lateinit var expensesTextView: TextView
-    private lateinit var balanceTextView: TextView
+   // private lateinit var expensesTextView: TextView
+    //private lateinit var balanceTextView: TextView
 
     private val handler = Handler(Looper.getMainLooper())
 
