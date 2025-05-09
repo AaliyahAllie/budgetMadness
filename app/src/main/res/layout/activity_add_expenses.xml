@@ -1,91 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#4CAF50"
-    android:padding="50dp"
+    android:background="#8BC34A"
+    android:padding="16dp"
     tools:context=".AddExpensesActivity">
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="match_parent"
+    <!-- Header with icon and title -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Expenses"
-        android:textAlignment="center"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginBottom="24dp"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="App Logo"
+            android:src="@drawable/ic_logo" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expenses"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Expense Name -->
     <EditText
         android:id="@+id/expenseNameInput"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#FFFFFF"
         android:hint="Enter Expense Name"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#FFFFFF"
+        android:textColorHint="#888888"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
 
+    <!-- Expense Amount -->
     <EditText
         android:id="@+id/expenseAmountInput"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FFFFFF"
         android:hint="Enter Expense Amount"
-        android:background="@color/white"
         android:inputType="numberDecimal"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#FFFFFF"
+        android:textColorHint="#888888"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expenseNameInput" />
 
+    <!-- Payment Method -->
     <EditText
         android:id="@+id/paymentMethodInput"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FFFFFF"
         android:hint="Card or Cash"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#FFFFFF"
+        android:textColorHint="#888888"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expenseAmountInput" />
 
+    <!-- Category Spinner -->
     <Spinner
         android:id="@+id/categorySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:layout_marginBottom="8dp"/>
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/paymentMethodInput" />
 
+    <!-- Select Date Button -->
     <Button
         android:id="@+id/selectDateButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:backgroundTint="#808080"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#4CAF50"
         android:text="Select Date"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categorySpinner" />
 
+    <!-- Upload Receipt Button -->
     <Button
         android:id="@+id/uploadReceiptButton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:backgroundTint="#808080"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#4CAF50"
         android:text="Add Receipt Image"
-        android:layout_marginBottom="16dp"/>
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selectDateButton" />
 
+    <!-- Add Expense Button -->
     <Button
         android:id="@+id/addExpenseButton"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:backgroundTint="#808080"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#008174"
         android:text="ADD"
-        android:layout_gravity="center"/>
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uploadReceiptButton" />
 
-</LinearLayout>
-
-
-
-
-
+</androidx.constraintlayout.widget.ConstraintLayout>
