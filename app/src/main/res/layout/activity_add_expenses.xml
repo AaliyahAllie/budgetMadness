@@ -60,7 +60,7 @@
         android:backgroundTint="#808080"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="Select a Date"
+        android:text="Select Date"
         android:layout_marginBottom="8dp"/>
 
     <Button
