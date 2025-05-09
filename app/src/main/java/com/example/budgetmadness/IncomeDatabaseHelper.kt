@@ -66,5 +66,20 @@ class IncomeDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
         return latestIncome
     }
+    fun getAllIncomeHistory(): List<Pair<Double, Double>> {
+        val db = this.readableDatabase
+        val list = mutableListOf<Pair<Double, Double>>()
+        val cursor = db.rawQuery("SELECT $COLUMN_CASH, $COLUMN_CARD FROM $TABLE_NAME ORDER BY $COLUMN_ID DESC", null)
+
+        while (cursor.moveToNext()) {
+            val cash = cursor.getDouble(0)
+            val card = cursor.getDouble(1)
+            list.add(Pair(cash, card))
+        }
+        cursor.close()
+        db.close()
+        return list
+    }
+
 
 }

@@ -61,7 +61,7 @@ class HomeScreenActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_open_menu -> {
-                    startActivity(Intent(this, AddExpensesActivity::class.java))
+                    startActivity(Intent(this, MenuActivity::class.java))
                     true
                 }
                 else -> false
