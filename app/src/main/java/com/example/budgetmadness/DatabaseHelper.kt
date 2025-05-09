@@ -63,4 +63,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         return isValid
     }
+    //method to save user images
+    fun updateUser(username: String, firstName: String, lastName: String, email: String, phone: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_FIRST_NAME, firstName)
+            put(COLUMN_LAST_NAME, lastName)
+            put(COLUMN_EMAIL, email)
+            put(COLUMN_PHONE, phone)
+        }
+        val result = db.update(TABLE_USERS, values, "$COLUMN_USERNAME = ?", arrayOf(username))
+        db.close()
+        return result > 0
+    }
+
 }
