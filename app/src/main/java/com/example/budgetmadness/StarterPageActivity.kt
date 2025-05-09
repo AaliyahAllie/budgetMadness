@@ -3,13 +3,8 @@ package com.example.budgetmadness
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import android.widget.Toast
 
 class StarterPageActivity : AppCompatActivity() {
 
@@ -17,12 +12,14 @@ class StarterPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_starter_page)
 
-
-
         findViewById<Button>(R.id.btnGetStarted).setOnClickListener {
+            // Optional: Show a toast
             Toast.makeText(this, "Get Started Clicked!", Toast.LENGTH_SHORT).show()
+
+            // Navigate to HomeScreenActivity
+            val intent = Intent(this, HomeScreenActivity::class.java)
+            startActivity(intent)
+            finish() //Closes StarterPageActivity so user can't go back to it with back button
         }
     }
-
-
 }

@@ -36,6 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -43,6 +46,8 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.0")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     kapt("androidx.room:room-compiler:2.5.0") // Ensure correct usage of kapt for room-compiler
 
     // Other dependencies
