@@ -12,6 +12,18 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- Instruction for user -->
+        <TextView
+            android:id="@+id/instructionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Please fill in all the fields below to complete your registration."
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="8dp" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/homeLogo"
             android:layout_width="150dp"

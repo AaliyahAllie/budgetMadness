@@ -11,6 +11,17 @@
     android:padding="24dp"
     tools:context=".MainActivity">
 
+    <!-- Instruction text for the user -->
+    <TextView
+        android:id="@+id/instructionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Welcome! Please register if you're new, or login if you already have an account."
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:padding="8dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/homeLogo"

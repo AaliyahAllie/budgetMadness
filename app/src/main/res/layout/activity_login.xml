@@ -8,6 +8,18 @@
     android:orientation="vertical"
     android:padding="24dp">
 
+    <!-- Instruction TextView -->
+    <TextView
+        android:id="@+id/loginInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Enter your username and password to log in."
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:padding="8dp" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/homeLogo"
         android:layout_width="150dp"
