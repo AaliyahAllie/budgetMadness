@@ -50,4 +50,21 @@ class IncomeDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
         return total
     }
+    fun getLatestIncome(): Double {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT $COLUMN_CASH, $COLUMN_CARD FROM $TABLE_NAME ORDER BY $COLUMN_ID DESC LIMIT 1",
+            null
+        )
+        var latestIncome = 0.0
+        if (cursor.moveToFirst()) {
+            val cash = cursor.getDouble(0)
+            val card = cursor.getDouble(1)
+            latestIncome = cash + card
+        }
+        cursor.close()
+        db.close()
+        return latestIncome
+    }
+
 }

@@ -108,6 +108,7 @@
         android:textStyle="bold" />
 
     <!-- Balance block -->
+    <!-- Balance block -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -125,7 +126,10 @@
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <!-- New: Total Income Display -->
     </LinearLayout>
+
 
     <!-- Coming Soon label -->
     <TextView

@@ -11,22 +11,24 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class HomeScreenActivity : AppCompatActivity() {
 
     private lateinit var incomeTextView: TextView
-    // private lateinit var expensesTextView: TextView
-    //private lateinit var balanceTextView: TextView
+    private lateinit var balanceTextView: TextView
 
     private val handler = Handler(Looper.getMainLooper())
 
-    // Runnable to update only the income block
+    // Runnable to update income and balance
     private val updateIncomeRunnable = object : Runnable {
         override fun run() {
-            // Fetch updated income from the database
             val incomeDatabaseHelper = IncomeDatabaseHelper(this@HomeScreenActivity)
+
+            // Get latest income and total income
+            val latestIncome = incomeDatabaseHelper.getLatestIncome()
             val totalIncome = incomeDatabaseHelper.getTotalIncome()
 
-            // Update the income block with the fetched value
-            incomeTextView.text = "+R$totalIncome"
+            // Update views
+            incomeTextView.text = "+R$latestIncome"
+            balanceTextView.text = "Total Income: R$totalIncome"
 
-            // Schedule the next income update after 5 seconds
+            // Repeat after 5 seconds
             handler.postDelayed(this, 5000)
         }
     }
@@ -37,15 +39,13 @@ class HomeScreenActivity : AppCompatActivity() {
 
         // Initialize views
         incomeTextView = findViewById(R.id.incomeTextView)
-        //expensesTextView = findViewById(R.id.expensesTextView)
-        //balanceTextView = findViewById(R.id.balanceTextView)
+        balanceTextView = findViewById(R.id.textViewBalance)
 
-        // Start the periodic update for income
+        // Start updates
         handler.post(updateIncomeRunnable)
 
-        // Set up bottom navigation
+        // Bottom navigation
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_income -> {
@@ -71,7 +71,6 @@ class HomeScreenActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Remove any pending posts of the updateIncomeRunnable to prevent memory leaks
         handler.removeCallbacks(updateIncomeRunnable)
     }
 }
