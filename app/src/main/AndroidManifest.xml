@@ -13,9 +13,11 @@
         android:theme="@style/Theme.BudgetMadness"
         tools:targetApi="31">
         <activity
-            android:name=".DatabaseHelper"
+            android:name=".HomeScreenActivity"
             android:exported="false" />
-        <!-- MainActivity: Entry point of the app -->
+        <activity
+            android:name=".DatabaseHelper"
+            android:exported="false" /> <!-- MainActivity: Entry point of the app -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
