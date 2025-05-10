@@ -49,13 +49,14 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         onCreate(db)
     }
 
-    fun insertCategory(name: String) {
-        val db = writableDatabase
+    fun insertCategory(category: String): Boolean {
+        val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(CATEGORY_NAME, name)
+            put("categoryName", category)
         }
-        db.insert(TABLE_CATEGORIES, null, values)
+        val result = db.insert("categories", null, values)
         db.close()
+        return result != -1L  // true if insert successful
     }
 
     fun getAllCategories(): List<String> {

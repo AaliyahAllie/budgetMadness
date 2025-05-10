@@ -27,8 +27,12 @@ class CategoriesActivity : AppCompatActivity() {
         newCategoryInput = findViewById(R.id.newCategoryInput)
         addCategoryButton = findViewById(R.id.addCategoryButton)
 
-        loadCategories()
+        // Load categories into list
+        categories = dbHelper.getAllCategories().toMutableList()
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, categories)
+        categoryListView.adapter = adapter
 
+        // Add category button click
         addCategoryButton.setOnClickListener {
             val newCategory = newCategoryInput.text.toString().trim()
             if (newCategory.isNotEmpty()) {
@@ -45,7 +49,7 @@ class CategoriesActivity : AppCompatActivity() {
             }
         }
 
-
+        //BOTTOM NAV
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -61,9 +65,9 @@ class CategoriesActivity : AppCompatActivity() {
     }
 
     private fun loadCategories() {
-        categories = dbHelper.getAllCategories().toMutableList()
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, categories)
-        categoryListView.adapter = adapter
+        categories.clear()
+        categories.addAll(dbHelper.getAllCategories())
+        adapter.notifyDataSetChanged()
     }
 }
 
