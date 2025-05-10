@@ -101,6 +101,24 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         return latestExpense
     }
 
+    fun getAllExpenses(): List<ExpenseEntry> {
+        val db = readableDatabase
+        val list = mutableListOf<ExpenseEntry>()
+        val cursor = db.rawQuery("SELECT $EXPENSE_NAME, $EXPENSE_AMOUNT, $EXPENSE_DATE FROM $TABLE_EXPENSES ORDER BY $EXPENSE_ID DESC", null)
+
+        while (cursor.moveToNext()) {
+            val name = cursor.getString(0)
+            val amount = cursor.getDouble(1)
+            val date = cursor.getString(2)
+            list.add(ExpenseEntry(name, amount, date))
+        }
+
+        cursor.close()
+        db.close()
+        return list
+    }
+
+    data class ExpenseEntry(val name: String, val amount: Double, val date: String)
 
     fun insertExpense(name: String, amount: Double, paymentMethod: String, category: String, date: String) {
         val db = writableDatabase

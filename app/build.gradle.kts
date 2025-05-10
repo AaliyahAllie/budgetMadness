@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     kapt("androidx.room:room-compiler:2.5.0") // Ensure correct usage of kapt for room-compiler
+    implementation ("androidx.cardview:cardview:1.0.0")
 
     // Other dependencies
     implementation("com.google.android.material:material:1.11.0")

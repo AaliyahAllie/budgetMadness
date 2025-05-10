@@ -11,25 +11,35 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class BalanceActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: IncomeDatabaseHelper
+    private lateinit var expenseDbHelper: BudgetDatabaseHelper
     private lateinit var totalIncomeText: TextView
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: IncomeHistoryAdapter
+    private lateinit var recyclerViewIncome: RecyclerView
+    private lateinit var recyclerViewExpenses: RecyclerView
+    private lateinit var incomeAdapter: IncomeHistoryAdapter
+    private lateinit var expenseAdapter: ExpenseHistoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_balance)
 
         dbHelper = IncomeDatabaseHelper(this)
+        expenseDbHelper = BudgetDatabaseHelper(this)
         totalIncomeText = findViewById(R.id.text_total_income)
-        recyclerView = findViewById(R.id.recycler_income_history)
+        recyclerViewIncome = findViewById(R.id.recycler_income_history)
+        recyclerViewExpenses = findViewById(R.id.recycler_expense_history)
 
         val totalIncome = dbHelper.getTotalIncome()
         totalIncomeText.text = "Total Balance: R%.2f".format(totalIncome)
 
         val incomeList = dbHelper.getAllIncomeHistory()
-        adapter = IncomeHistoryAdapter(incomeList)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        incomeAdapter = IncomeHistoryAdapter(incomeList)
+        recyclerViewIncome.layoutManager = LinearLayoutManager(this)
+        recyclerViewIncome.adapter = incomeAdapter
+
+        val expenseList = expenseDbHelper.getAllExpenses()
+        expenseAdapter = ExpenseHistoryAdapter(expenseList)
+        recyclerViewExpenses.layoutManager = LinearLayoutManager(this)
+        recyclerViewExpenses.adapter = expenseAdapter
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.setOnItemSelectedListener { item ->
@@ -52,6 +62,6 @@ class BalanceActivity : AppCompatActivity() {
                 }
                 else -> false
             }
-            }
+        }
     }
 }
