@@ -42,7 +42,7 @@
     <EditText
         android:id="@+id/expenseNameInput"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="#FFFFFF"
         android:hint="Enter Expense Name"
@@ -56,7 +56,7 @@
     <EditText
         android:id="@+id/expenseAmountInput"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         android:hint="Enter Expense Amount"
@@ -71,7 +71,7 @@
     <EditText
         android:id="@+id/paymentMethodInput"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         android:hint="Card or Cash"
@@ -85,7 +85,7 @@
     <Spinner
         android:id="@+id/categorySpinner"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/paymentMethodInput"
