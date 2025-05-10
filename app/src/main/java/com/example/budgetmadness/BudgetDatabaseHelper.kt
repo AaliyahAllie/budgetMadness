@@ -2,6 +2,7 @@ package com.example.budgetmadness
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -10,9 +11,9 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         private const val DATABASE_NAME = "budget.db"
         private const val DATABASE_VERSION = 1
 
-        const val TABLE_CATEGORIES = "categories"
-        const val CATEGORY_ID = "_id"
-        const val CATEGORY_NAME = "name"
+        const val TABLE_CATEGORIES = "Categories"
+        const val COLUMN_ID = "id"
+        const val COLUMN_CATEGORY_NAME = "name"
 
         const val TABLE_EXPENSES = "expenses"
         const val EXPENSE_ID = "_id"
@@ -24,12 +25,14 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("""
+        val createCategoriesTable = """
             CREATE TABLE $TABLE_CATEGORIES (
-                $CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $CATEGORY_NAME TEXT NOT NULL
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_CATEGORY_NAME TEXT UNIQUE
             )
-        """.trimIndent())
+        """.trimIndent()
+
+        db.execSQL(createCategoriesTable)
 
         db.execSQL("""
             CREATE TABLE $TABLE_EXPENSES (
@@ -51,24 +54,37 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
 
     fun insertCategory(category: String): Boolean {
         val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put("categoryName", category)
+
+        if (category.isBlank()) return false
+
+        val contentValues = ContentValues().apply {
+            put(COLUMN_CATEGORY_NAME, category.trim().lowercase()) // Normalize
         }
-        val result = db.insert("categories", null, values)
-        db.close()
-        return result != -1L  // true if insert successful
+
+        return try {
+            val result = db.insertOrThrow(TABLE_CATEGORIES, null, contentValues)
+            result != -1L
+        } catch (e: SQLiteConstraintException) {
+            false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
     fun getAllCategories(): List<String> {
-        val categories = mutableListOf<String>()
-        val db = readableDatabase
-        val cursor = db.rawQuery("SELECT $CATEGORY_NAME FROM $TABLE_CATEGORIES", null)
-        while (cursor.moveToNext()) {
-            categories.add(cursor.getString(0))
+        val categoryList = mutableListOf<String>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT $COLUMN_CATEGORY_NAME FROM $TABLE_CATEGORIES", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                categoryList.add(cursor.getString(0))
+            } while (cursor.moveToNext())
         }
+
         cursor.close()
-        db.close()
-        return categories
+        return categoryList
     }
 
     fun insertExpense(name: String, amount: Double, paymentMethod: String, category: String, date: String) {
