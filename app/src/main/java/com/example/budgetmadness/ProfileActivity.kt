@@ -1,5 +1,6 @@
 package com.example.budgetmadness
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.InputStream
 
 class ProfileActivity : AppCompatActivity() {
@@ -17,6 +19,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
     private val currentUsername = "user123" // Replace with actual logged-in user
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -44,7 +47,39 @@ class ProfileActivity : AppCompatActivity() {
                 etEmail.text.toString(),
                 etPhone.text.toString()
             )
-            Toast.makeText(this, if (updated) "Updated!" else "Failed to update", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                if (updated) "Updated!" else "Failed to update",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        // Bottom navigation
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_income -> {
+                    startActivity(Intent(this, IncomeActivity::class.java))
+                    true
+                }
+
+                R.id.nav_home -> {
+                    startActivity(Intent(this, StarterPageActivity::class.java))
+                    true
+                }
+
+                R.id.nav_add -> {
+                    startActivity(Intent(this, AddExpensesActivity::class.java))
+                    true
+                }
+
+                R.id.nav_open_menu -> {
+                    startActivity(Intent(this, MenuActivity::class.java))
+                    true
+                }
+
+                else -> false
+
+            }
         }
     }
 
