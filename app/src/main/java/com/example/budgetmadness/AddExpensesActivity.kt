@@ -1,5 +1,6 @@
 package com.example.budgetmadness
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,7 @@ class AddExpensesActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_add_expenses)
 
-        var dbHelper = BudgetDatabaseHelper(this)
+        val dbHelper = BudgetDatabaseHelper(this)
 
         //LINK VIEWS
         expenseNameInput = findViewById(R.id.expenseNameInput)
@@ -77,14 +78,17 @@ class AddExpensesActivity : AppCompatActivity() {
             }
         }
 
-        fun clearInputs() {
-            expenseNameInput.text.clear()
-            expenseAmountInput.text.clear()
-            paymentMethodInput.text.clear()
-            categorySpinner.setSelection(0)
-            selectDataButton.text = "Select Date"
-            selectedDate = ""
-        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun clearInputs() {
+
+        expenseNameInput.text.clear()
+        expenseAmountInput.text.clear()
+        paymentMethodInput.text.clear()
+        categorySpinner.setSelection(0)
+        selectDataButton.text = "Select Date"
+        selectedDate = ""
     }
 }
 
