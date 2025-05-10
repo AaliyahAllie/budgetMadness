@@ -19,7 +19,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
     private val currentUsername = "user123" // Replace with actual logged-in user
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -53,7 +52,30 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+        //BOTTOM NAV
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_income -> {
+                    startActivity(Intent(this, IncomeActivity::class.java))
+                    true
+                }
+                R.id.nav_home -> {
+                    startActivity(Intent(this, StarterPageActivity::class.java))
+                    true
+                }
+                R.id.nav_add -> {
+                    startActivity(Intent(this, AddExpensesActivity::class.java))
+                    true
+                }
+                R.id.nav_open_menu -> {
+                    startActivity(Intent(this, MenuActivity::class.java))
+                    true
+                }
 
+                else -> false
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
