@@ -19,7 +19,6 @@
         android:padding="16dp">
 
         <ImageView
-
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp"
@@ -93,21 +92,19 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
-
     </LinearLayout>
 
-    <!-- Balance label -->
+    <!-- Updated Balance label -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="16dp"
-        android:text="Balance"
+        android:text="Available Balance (Income - Expenses)"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Balance block -->
     <!-- Balance block -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -126,10 +123,7 @@
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold" />
-
-        <!-- New: Total Income Display -->
     </LinearLayout>
-
 
     <!-- Coming Soon label -->
     <TextView

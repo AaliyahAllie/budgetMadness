@@ -86,6 +86,21 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         cursor.close()
         return categoryList
     }
+    fun getLatestExpense(): Double {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT $EXPENSE_AMOUNT FROM $TABLE_EXPENSES ORDER BY $EXPENSE_ID DESC LIMIT 1",
+            null
+        )
+        var latestExpense = 0.0
+        if (cursor.moveToFirst()) {
+            latestExpense = cursor.getDouble(0)
+        }
+        cursor.close()
+        db.close()
+        return latestExpense
+    }
+
 
     fun insertExpense(name: String, amount: Double, paymentMethod: String, category: String, date: String) {
         val db = writableDatabase
@@ -99,4 +114,16 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.insert(TABLE_EXPENSES, null, values)
         db.close()
     }
+    fun getTotalExpenses(): Double {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT SUM($EXPENSE_AMOUNT) FROM $TABLE_EXPENSES", null)
+        var total = 0.0
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0)
+        }
+        cursor.close()
+        db.close()
+        return total
+    }
+
 }

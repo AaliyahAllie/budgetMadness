@@ -11,24 +11,30 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class HomeScreenActivity : AppCompatActivity() {
 
     private lateinit var incomeTextView: TextView
+    private lateinit var expenseTextView: TextView
     private lateinit var balanceTextView: TextView
 
     private val handler = Handler(Looper.getMainLooper())
 
-    // Runnable to update income and balance
-    private val updateIncomeRunnable = object : Runnable {
+    private val updateUIRunnable = object : Runnable {
         override fun run() {
-            val incomeDatabaseHelper = IncomeDatabaseHelper(this@HomeScreenActivity)
+            val incomeDb = IncomeDatabaseHelper(this@HomeScreenActivity)
+            val expenseDb = BudgetDatabaseHelper(this@HomeScreenActivity)
 
-            // Get latest income and total income
-            val latestIncome = incomeDatabaseHelper.getLatestIncome()
-            val totalIncome = incomeDatabaseHelper.getTotalIncome()
+            // Get values
+            val latestIncome = incomeDb.getLatestIncome()
+            val totalIncome = incomeDb.getTotalIncome()
+            val latestExpense = expenseDb.getLatestExpense()
 
-            // Update views
+            // Display latest income and expense
             incomeTextView.text = "+R$latestIncome"
-            balanceTextView.text = "Total Income: R$totalIncome"
+            expenseTextView.text = "-R$latestExpense"
 
-            // Repeat after 5 seconds
+            // Compute balance: totalIncome - latestExpense
+            val balance = totalIncome - latestExpense
+            balanceTextView.text = "R$balance"
+
+            // Refresh every 5 seconds
             handler.postDelayed(this, 5000)
         }
     }
@@ -37,12 +43,13 @@ class HomeScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_screen)
 
-        // Initialize views
+        // Connect TextViews
         incomeTextView = findViewById(R.id.incomeTextView)
+        expenseTextView = findViewById(R.id.textViewExpenses)
         balanceTextView = findViewById(R.id.textViewBalance)
 
-        // Start updates
-        handler.post(updateIncomeRunnable)
+        // Start UI updates
+        handler.post(updateUIRunnable)
 
         // Bottom navigation
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -71,6 +78,6 @@ class HomeScreenActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(updateIncomeRunnable)
+        handler.removeCallbacks(updateUIRunnable)
     }
 }
