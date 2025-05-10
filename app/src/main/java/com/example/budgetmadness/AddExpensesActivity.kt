@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.*
 import  java.util.*
 import android.app.DatePickerDialog
+import android.content.Intent
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AddExpensesActivity : AppCompatActivity() {
 
@@ -75,6 +77,19 @@ class AddExpensesActivity : AppCompatActivity() {
                 clearInputs()
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            }
+        }
+        // Bottom navigation
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_open_menu -> {
+                    startActivity(Intent(this, MenuActivity::class.java))
+                    true
+                }
+
+                else -> false
+
             }
         }
 
