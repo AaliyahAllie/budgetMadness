@@ -36,7 +36,8 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp"
+        android:choiceMode="singleChoice" />
 
     <EditText
         android:id="@+id/newCategoryInput"
@@ -51,6 +52,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add"
+        android:backgroundTint="#8BC34A"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp" />
+
+    <!-- Button to Delete Category -->
+    <Button
+        android:id="@+id/deleteCategoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:backgroundTint="#8BC34A"
         android:layout_gravity="end"
         android:layout_marginTop="8dp" />
 

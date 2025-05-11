@@ -13,8 +13,10 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var categoryListView: ListView
     private lateinit var newCategoryInput: EditText
     private lateinit var addCategoryButton: Button
+    private lateinit var deleteCategoryButton: Button
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var categories: MutableList<String>
+    private var selectedCategory: String? = null  // Track the selected category
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +28,18 @@ class CategoriesActivity : AppCompatActivity() {
         categoryListView = findViewById(R.id.categoryListView)
         newCategoryInput = findViewById(R.id.newCategoryInput)
         addCategoryButton = findViewById(R.id.addCategoryButton)
+        deleteCategoryButton = findViewById(R.id.deleteCategoryButton)
 
         // Load categories into list
         categories = dbHelper.getAllCategories().toMutableList()
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, categories)
         categoryListView.adapter = adapter
+
+        // Handle item selection in ListView
+        categoryListView.setOnItemClickListener { _, _, position, _ ->
+            selectedCategory = categories[position]
+            Toast.makeText(this, "$selectedCategory selected", Toast.LENGTH_SHORT).show()
+        }
 
         // Add category button click
         addCategoryButton.setOnClickListener {
@@ -49,7 +58,22 @@ class CategoriesActivity : AppCompatActivity() {
             }
         }
 
-        //BOTTOM NAV
+        // Delete category button click
+        deleteCategoryButton.setOnClickListener {
+            selectedCategory?.let { category ->
+                val success = dbHelper.deleteCategory(category)
+                if (success) {
+                    Toast.makeText(this, "$category deleted!", Toast.LENGTH_SHORT).show()
+                    loadCategories()
+                } else {
+                    Toast.makeText(this, "Failed to delete category", Toast.LENGTH_SHORT).show()
+                }
+            } ?: run {
+                Toast.makeText(this, "Select a category to delete", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // BOTTOM NAVIGATION
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -69,11 +93,9 @@ class CategoriesActivity : AppCompatActivity() {
                     startActivity(Intent(this, MenuActivity::class.java))
                     true
                 }
-
                 else -> false
             }
         }
-
     }
 
     private fun loadCategories() {
@@ -82,4 +104,3 @@ class CategoriesActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 }
-
