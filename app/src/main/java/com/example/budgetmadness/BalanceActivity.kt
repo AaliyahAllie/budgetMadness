@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BalanceActivity : AppCompatActivity() {
+
+    private val TAG = "BalanceActivity"
 
     private lateinit var dbHelper: IncomeDatabaseHelper
     private lateinit var expenseDbHelper: BudgetDatabaseHelper
@@ -25,19 +28,16 @@ class BalanceActivity : AppCompatActivity() {
 
     private val incomeUpdater = object : Runnable {
         override fun run() {
-            // Get total income from database
             val totalIncome = dbHelper.getTotalIncome()
-
-            // Get the latest expense from database
             val latestExpense = expenseDbHelper.getLatestExpense()
-
-            // Compute the balance: totalIncome - latestExpense
             val balance = totalIncome - latestExpense
 
-            // Display the balance in totalIncomeText
+            Log.d(TAG, "Total Income: R$totalIncome")
+            Log.d(TAG, "Latest Expense: R$latestExpense")
+            Log.d(TAG, "Calculated Balance: R$balance")
+
             totalIncomeText.text = "Total Balance: R%.2f".format(balance)
 
-            // Update the balance every 2 seconds
             handler.postDelayed(this, updateInterval)
         }
     }
@@ -45,57 +45,69 @@ class BalanceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_balance)
+        Log.d(TAG, "onCreate called")
 
         dbHelper = IncomeDatabaseHelper(this)
         expenseDbHelper = BudgetDatabaseHelper(this)
+
         totalIncomeText = findViewById(R.id.text_total_income)
         recyclerViewIncome = findViewById(R.id.recycler_income_history)
         recyclerViewExpenses = findViewById(R.id.recycler_expense_history)
 
-        // Set up the income recycler view
         val incomeList = dbHelper.getAllIncomeHistory()
+        Log.d(TAG, "Loaded ${incomeList.size} income records")
+
         incomeAdapter = IncomeHistoryAdapter(incomeList)
         recyclerViewIncome.layoutManager = LinearLayoutManager(this)
         recyclerViewIncome.adapter = incomeAdapter
 
-        // Set up the expense recycler view
         val expenseList = expenseDbHelper.getAllExpenses()
+        Log.d(TAG, "Loaded ${expenseList.size} expense records")
+
         expenseAdapter = ExpenseHistoryAdapter(expenseList)
         recyclerViewExpenses.layoutManager = LinearLayoutManager(this)
         recyclerViewExpenses.adapter = expenseAdapter
 
-        // Bottom navigation setup
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_income -> {
+                    Log.d(TAG, "Navigating to IncomeActivity")
                     startActivity(Intent(this, IncomeActivity::class.java))
                     true
                 }
                 R.id.nav_home -> {
+                    Log.d(TAG, "Navigating to StarterPageActivity")
                     startActivity(Intent(this, StarterPageActivity::class.java))
                     true
                 }
                 R.id.nav_add -> {
+                    Log.d(TAG, "Navigating to AddExpensesActivity")
                     startActivity(Intent(this, AddExpensesActivity::class.java))
                     true
                 }
                 R.id.nav_open_menu -> {
+                    Log.d(TAG, "Navigating to MenuActivity")
                     startActivity(Intent(this, MenuActivity::class.java))
                     true
                 }
-                else -> false
+                else -> {
+                    Log.w(TAG, "Unknown navigation item selected")
+                    false
+                }
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        handler.post(incomeUpdater)  // Start the incomeUpdater when the activity is resumed
+        Log.d(TAG, "onResume called - starting balance updater")
+        handler.post(incomeUpdater)
     }
 
     override fun onPause() {
         super.onPause()
-        handler.removeCallbacks(incomeUpdater)  // Stop the incomeUpdater when the activity is paused
+        Log.d(TAG, "onPause called - stopping balance updater")
+        handler.removeCallbacks(incomeUpdater)
     }
 }
