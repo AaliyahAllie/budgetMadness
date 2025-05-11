@@ -2,6 +2,7 @@ package com.example.budgetmadness
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -25,14 +26,13 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        val createCategoriesTable = """
+        // Create tables
+        db.execSQL("""
             CREATE TABLE $TABLE_CATEGORIES (
                 $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_CATEGORY_NAME TEXT UNIQUE
             )
-        """.trimIndent()
-
-        db.execSQL(createCategoriesTable)
+        """.trimIndent())
 
         db.execSQL("""
             CREATE TABLE $TABLE_EXPENSES (
@@ -52,8 +52,9 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         onCreate(db)
     }
 
+    // Insert a new category
     fun insertCategory(category: String): Boolean {
-        val db = this.writableDatabase
+        val db = writableDatabase
 
         if (category.isBlank()) return false
 
@@ -69,57 +70,66 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         } catch (e: Exception) {
             e.printStackTrace()
             false
+        } finally {
+            db.close()
         }
     }
 
+    // Get all categories
     fun getAllCategories(): List<String> {
         val categoryList = mutableListOf<String>()
-        val db = this.readableDatabase
+        val db = readableDatabase
         val cursor = db.rawQuery("SELECT $COLUMN_CATEGORY_NAME FROM $TABLE_CATEGORIES", null)
 
-        if (cursor.moveToFirst()) {
-            do {
-                categoryList.add(cursor.getString(0))
-            } while (cursor.moveToNext())
+        cursor.use {
+            while (it.moveToNext()) {
+                categoryList.add(it.getString(0))
+            }
         }
 
-        cursor.close()
         return categoryList
     }
+
+    // Get the latest expense
     fun getLatestExpense(): Double {
-        val db = this.readableDatabase
+        val db = readableDatabase
         val cursor = db.rawQuery(
             "SELECT $EXPENSE_AMOUNT FROM $TABLE_EXPENSES ORDER BY $EXPENSE_ID DESC LIMIT 1",
             null
         )
+
         var latestExpense = 0.0
-        if (cursor.moveToFirst()) {
-            latestExpense = cursor.getDouble(0)
+        cursor.use {
+            if (it.moveToFirst()) {
+                latestExpense = it.getDouble(0)
+            }
         }
-        cursor.close()
-        db.close()
+
         return latestExpense
     }
 
+    // Get all expenses
     fun getAllExpenses(): List<ExpenseEntry> {
         val db = readableDatabase
         val list = mutableListOf<ExpenseEntry>()
-        val cursor = db.rawQuery("SELECT $EXPENSE_NAME, $EXPENSE_AMOUNT, $EXPENSE_DATE FROM $TABLE_EXPENSES ORDER BY $EXPENSE_ID DESC", null)
+        val cursor = db.rawQuery(
+            "SELECT $EXPENSE_NAME, $EXPENSE_AMOUNT, $EXPENSE_DATE FROM $TABLE_EXPENSES ORDER BY $EXPENSE_ID DESC",
+            null
+        )
 
-        while (cursor.moveToNext()) {
-            val name = cursor.getString(0)
-            val amount = cursor.getDouble(1)
-            val date = cursor.getString(2)
-            list.add(ExpenseEntry(name, amount, date))
+        cursor.use {
+            while (it.moveToNext()) {
+                val name = it.getString(0)
+                val amount = it.getDouble(1)
+                val date = it.getString(2)
+                list.add(ExpenseEntry(name, amount, date))
+            }
         }
 
-        cursor.close()
-        db.close()
         return list
     }
 
-    data class ExpenseEntry(val name: String, val amount: Double, val date: String)
-
+    // Insert a new expense
     fun insertExpense(name: String, amount: Double, paymentMethod: String, category: String, date: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -129,19 +139,41 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             put(EXPENSE_CATEGORY, category)
             put(EXPENSE_DATE, date)
         }
+
         db.insert(TABLE_EXPENSES, null, values)
         db.close()
     }
+
+    // Delete a category
+    fun deleteCategory(category: String): Boolean {
+        val db = writableDatabase
+
+        // Normalize category name
+        val rowsAffected = db.delete(
+            TABLE_CATEGORIES,
+            "$COLUMN_CATEGORY_NAME = ?",
+            arrayOf(category.trim().lowercase())
+        )
+
+        db.close()
+        return rowsAffected > 0
+    }
+
+    // Get total expenses
     fun getTotalExpenses(): Double {
-        val db = this.readableDatabase
+        val db = readableDatabase
         val cursor = db.rawQuery("SELECT SUM($EXPENSE_AMOUNT) FROM $TABLE_EXPENSES", null)
+
         var total = 0.0
-        if (cursor.moveToFirst()) {
-            total = cursor.getDouble(0)
+        cursor.use {
+            if (it.moveToFirst()) {
+                total = it.getDouble(0)
+            }
         }
-        cursor.close()
+
         db.close()
         return total
     }
 
+    data class ExpenseEntry(val name: String, val amount: Double, val date: String)
 }
