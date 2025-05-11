@@ -25,7 +25,6 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Create Categories table
         val createCategoriesTable = """
             CREATE TABLE $TABLE_CATEGORIES (
                 $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,42 +34,22 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
 
         db.execSQL(createCategoriesTable)
 
-        // Create Expenses table with a foreign key reference to Categories
-        val createExpensesTable = """
+        db.execSQL("""
             CREATE TABLE $TABLE_EXPENSES (
                 $EXPENSE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $EXPENSE_NAME TEXT NOT NULL,
                 $EXPENSE_AMOUNT REAL NOT NULL,
                 $EXPENSE_PAYMENT_METHOD TEXT NOT NULL,
-                $EXPENSE_CATEGORY INTEGER NOT NULL,
-                $EXPENSE_DATE TEXT NOT NULL,
-                FOREIGN KEY ($EXPENSE_CATEGORY) REFERENCES $TABLE_CATEGORIES($COLUMN_ID)
+                $EXPENSE_CATEGORY TEXT NOT NULL,
+                $EXPENSE_DATE TEXT NOT NULL
             )
-        """.trimIndent()
-
-        db.execSQL(createExpensesTable)
+        """.trimIndent())
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Drop old tables if they exist and create fresh ones
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_EXPENSES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CATEGORIES")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_EXPENSES")
         onCreate(db)
-    }
-    fun deleteCategory(category: String): Boolean {
-        val db = this.writableDatabase
-        val categoryId = getCategoryId(category)  // Get category ID for the category name
-
-        if (categoryId == -1) return false  // Category doesn't exist
-
-        val rowsDeleted = db.delete(
-            TABLE_CATEGORIES,
-            "$COLUMN_CATEGORY_NAME = ?",
-            arrayOf(category)
-        )
-
-        db.close()
-        return rowsDeleted > 0
     }
 
     fun insertCategory(category: String): Boolean {
@@ -79,7 +58,7 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         if (category.isBlank()) return false
 
         val contentValues = ContentValues().apply {
-            put(COLUMN_CATEGORY_NAME, category.trim()) // Keeping case-sensitive
+            put(COLUMN_CATEGORY_NAME, category.trim().lowercase()) // Normalize
         }
 
         return try {
@@ -107,7 +86,6 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         cursor.close()
         return categoryList
     }
-
     fun getLatestExpense(): Double {
         val db = this.readableDatabase
         val cursor = db.rawQuery(
@@ -119,6 +97,7 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             latestExpense = cursor.getDouble(0)
         }
         cursor.close()
+        db.close()
         return latestExpense
     }
 
@@ -135,6 +114,7 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         }
 
         cursor.close()
+        db.close()
         return list
     }
 
@@ -142,17 +122,16 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
 
     fun insertExpense(name: String, amount: Double, paymentMethod: String, category: String, date: String) {
         val db = writableDatabase
-        val contentValues = ContentValues().apply {
+        val values = ContentValues().apply {
             put(EXPENSE_NAME, name)
             put(EXPENSE_AMOUNT, amount)
             put(EXPENSE_PAYMENT_METHOD, paymentMethod)
-            put(EXPENSE_CATEGORY, getCategoryId(category))  // Use ID instead of name
+            put(EXPENSE_CATEGORY, category)
             put(EXPENSE_DATE, date)
         }
-        db.insert(TABLE_EXPENSES, null, contentValues)
+        db.insert(TABLE_EXPENSES, null, values)
         db.close()
     }
-
     fun getTotalExpenses(): Double {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT SUM($EXPENSE_AMOUNT) FROM $TABLE_EXPENSES", null)
@@ -161,21 +140,8 @@ class BudgetDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             total = cursor.getDouble(0)
         }
         cursor.close()
+        db.close()
         return total
     }
 
-    // Helper function to get category ID
-    private fun getCategoryId(category: String): Int {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT $COLUMN_ID FROM $TABLE_CATEGORIES WHERE $COLUMN_CATEGORY_NAME = ?",
-            arrayOf(category)
-        )
-        var categoryId = -1
-        if (cursor.moveToFirst()) {
-            categoryId = cursor.getInt(0)
-        }
-        cursor.close()
-        return categoryId
-    }
 }
