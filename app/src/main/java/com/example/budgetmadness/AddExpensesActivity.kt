@@ -9,12 +9,6 @@ import  java.util.*
 import android.app.DatePickerDialog
 import android.content.Intent
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.app.AlertDialog
-import android.graphics.Bitmap
-import android.net.Uri
-import android.provider.MediaStore
-import androidx.core.content.FileProvider
-import java.io.File
 
 class AddExpensesActivity : AppCompatActivity() {
 
@@ -25,10 +19,6 @@ class AddExpensesActivity : AppCompatActivity() {
     private lateinit var selectDataButton: Button
     private lateinit var uploadReceiptButton: Button
     private lateinit var addExpenseButton: Button
-    private val PICK_IMAGE_REQUEST = 1
-    private val REQUEST_IMAGE_CAPTURE = 2
-    private var selectedImageBytes: ByteArray? = null
-    private var imageUri: Uri? = null
 
     private var selectedDate: String = ""
 
@@ -71,19 +61,7 @@ class AddExpensesActivity : AppCompatActivity() {
 
 
         //RECEIPT BUTTON CLICK
-        uploadReceiptButton.setOnClickListener {
-            val options = arrayOf("Take Photo", "Choose from Gallery")
 
-            AlertDialog.Builder(this)
-                .setTitle("Add Receipt Image")
-                .setItems(options) { _, which ->
-                    when (which) {
-                        0 -> openCamera()
-                        1 -> openGallery()
-                    }
-                }
-                .show()
-        }
 
         //ADD EXPENSE
         addExpenseButton.setOnClickListener {
@@ -138,21 +116,6 @@ class AddExpensesActivity : AppCompatActivity() {
         categorySpinner.setSelection(0)
         selectDataButton.text = "Select Date"
         selectedDate = ""
-    }
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
-    }
-
-    private fun openCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        val photoFile = File.createTempFile("receipt_", ".jpg", cacheDir)
-        imageUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
 }
 
