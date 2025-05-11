@@ -36,7 +36,8 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp"
+        android:choiceMode="singleChoice" />
 
     <EditText
         android:id="@+id/newCategoryInput"

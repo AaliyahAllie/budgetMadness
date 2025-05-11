@@ -20,7 +20,7 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var categoryListView: ListView
     private lateinit var newCategoryInput: EditText
     private lateinit var addCategoryButton: Button
-    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var adapter: CategoryAdapter
     private lateinit var categories: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class CategoriesActivity : AppCompatActivity() {
 
         // Load categories into list
         categories = dbHelper.getAllCategories().toMutableList()
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, categories)
+        adapter = CategoryAdapter(this, categories, dbHelper)
         categoryListView.adapter = adapter
 
         // Add category button click
