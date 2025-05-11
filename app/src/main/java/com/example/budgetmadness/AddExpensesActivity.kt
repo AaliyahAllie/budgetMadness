@@ -153,6 +153,27 @@ class AddExpensesActivity : AppCompatActivity() {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                PICK_IMAGE_REQUEST -> {
+                    val uri = data?.data
+                    uri?.let {
+                        selectedImageBytes = contentResolver.openInputStream(it)?.readBytes()
+                        Toast.makeText(this, "Image selected from gallery", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                REQUEST_IMAGE_CAPTURE -> {
+                    imageUri?.let {
+                        selectedImageBytes = contentResolver.openInputStream(it)?.readBytes()
+                        Toast.makeText(this, "Photo captured", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 }
 
 
